@@ -6,9 +6,8 @@ ZumoReflectanceSensorArray reflectanceSensors;
 ZumoMotors motors;
 Pushbutton button(ZUMO_BUTTON);
 int lastError = 0;
-
-// This is the maximum speed the motors will be allowed to turn.
-// (400 lets the motors go at top speed; decrease to impose a speed limit)
+unsigned int sensors[6];
+int speedDifference = 0;
 const int MAX_SPEED = 200;
 const int TrigPin = 7;
 const int EchoPin = 6;
@@ -77,22 +76,13 @@ void loop()
   digitalWrite(TrigPin, LOW);
   // 检测脉冲宽度，并计算出距离
   distance = pulseIn(EchoPin, HIGH) / 58.00;
-  Serial.print(distance);
-  Serial.print("cm");
-  Serial.println(); 
+//  Serial.print(distance);
+//  Serial.print("cm");
+//  Serial.println(); 
   
-  unsigned int sensors[6];
-
-  // Get the position of the line.  Note that we must provide the "sensors"
-  // argument to readLine() here, even though we are not interested in the
-  // individual sensor readings
   int position = reflectanceSensors.readLine(sensors);
-  Serial.println(sensors[6]);
+//  Serial.println(sensors[6]);
 
-  int speedDifference = 0;
-  
-  // Get individual motor speeds.  The sign of speedDifference
-  // determines if the robot turns left or right.
   int m1Speed = MAX_SPEED + speedDifference;
   int m2Speed = MAX_SPEED - speedDifference;
   if (distance < 10)
